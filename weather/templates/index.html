@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Weather App</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>What's the weather like?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+
+</head>
+
+<body>
+	 <section class="hero is-primary", color= "blue">
+        <div class="hero-body">
+            <div class="container">
+                <center><h1 class="title">
+                    Live Weather Information  
+                </h1>
+                </center>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                    	{% csrf_token %}
+
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <input class="input" type="text" placeholder="City Name", name="city">
+                            </div>
+                            <div class="control">
+                                <button type="submit" class="button is-info">
+                                    Add City
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% for city in city_weather %}
+
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-2 is-4">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-50x50">
+                                    <img src="http://openweathermap.org/img/w/{{city.icon}}.png" alt="Image">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <span class="title">{{city.city}}</span>
+                                        <br>
+                                        <span class="subtitle">{{city.temprature}}°F</span>
+                                        <br> {{city.description}}
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form method="POST" style=" padding-right: 4%; padding-bottom: 3%;">
+          {% csrf_token %}
+          <button value="remove" type="submit"  class="btn btn-primary" style="float: right;"> <a href = "del/{{ city.id }}">Remove </a></button>
+        </form>
+{% endfor %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+
+</form>
+</body>
+</html>
