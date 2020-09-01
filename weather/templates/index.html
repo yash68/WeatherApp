@@ -11,12 +11,14 @@
 </head>
 
 <body>
+    
+
 	 <section class="hero is-primary", color= "blue">
         <div class="hero-body">
             <div class="container">
                 <center><h1 class="title">
                     Live Weather Information  
-                </h1>
+                </h1> by Yash Garg for Fox Trading Solutions
                 </center>
             </div>
         </div>
@@ -33,7 +35,7 @@
                                 <input class="input" type="text" placeholder="City Name", name="city">
                             </div>
                             <div class="control">
-                                <button type="submit" class="button is-info">
+                                <button type="submit" class="button is-info" name="addcity">
                                     Add City
                                 </button>
                             </div>
@@ -61,7 +63,15 @@
                                     <p>
                                         <span class="title">{{city.city}}</span>
                                         <br>
-                                        <span class="subtitle">{{city.temprature}}°F</span>
+                                        <span class="subtitle">{{city.temprature}}
+                                            {% if city.flag == 0 %}
+                                                    °C 
+                                            {% else %}
+                                                    °F
+                                            {% endif %}
+
+                                        </span>
+
                                         <br> {{city.description}}
                                     </p>
                                 </div>
@@ -71,11 +81,20 @@
                 </div>
             </div>
         </div>
+
+        <form method='POST'style=" padding-right: 4%; padding-bottom: 3%;">
+        {% csrf_token %}
+            <input type="hidden" name="cityid" value="{{city.id}}">
+             <button type="submit" name="tempchange"class="btn btn-primary" style="float: right;">Temp Change</button>
+        </form>
+        
         <form method="POST" style=" padding-right: 4%; padding-bottom: 3%;">
           {% csrf_token %}
           <button value="remove" type="submit"  class="btn btn-primary" style="float: right;"> <a href = "del/{{ city.id }}">Remove </a></button>
         </form>
 {% endfor %}
+
+<!--Message-->
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -84,8 +103,5 @@
 </ul>
 {% endif %}
 
-
-
-</form>
 </body>
 </html>
